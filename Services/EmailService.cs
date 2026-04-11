@@ -36,6 +36,7 @@ public class EmailService
         };
 
         using var smtp = new SmtpClient();
+        smtp.Timeout = 10000;
         await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
         await smtp.AuthenticateAsync("nursevinc90@gmail.com", "bvngmkowwbogiuln");
         await smtp.SendAsync(mail);
