@@ -12,7 +12,9 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(
             "http://localhost:5173",
             "http://localhost:5176",
-            "https://personal-site-taupe-omega-52.vercel.app"
+            "https://personal-site-taupe-omega-52.vercel.app",
+            "https://nursevinc.com",
+            "https://www.nursevinc.com"
         )
         .AllowAnyHeader()
         .AllowAnyMethod());
