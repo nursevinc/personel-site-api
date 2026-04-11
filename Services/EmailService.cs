@@ -14,7 +14,7 @@ public class EmailService
 
     public async Task SendContactEmailAsync(string name, string email, string message)
     {
-        var apiKey = _config["SendGrid:ApiKey"];
+        var apiKey = _config["SENDGRID_API_KEY"] ?? _config["SendGrid:ApiKey"];
         var client = new SendGridClient(apiKey);
 
         var from = new EmailAddress("nursevinc90@gmail.com", "nursevinc.com");
