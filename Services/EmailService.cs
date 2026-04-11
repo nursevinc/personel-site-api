@@ -1,8 +1,5 @@
-﻿using MailKit.Net.Smtp;
-using MailKit.Security;
-using MimeKit;
-using System.Net.Mail;
-using SmtpClient = MailKit.Net.Smtp.SmtpClient;
+﻿using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace Blog.Services;
 
@@ -17,29 +14,21 @@ public class EmailService
 
     public async Task SendContactEmailAsync(string name, string email, string message)
     {
-        var settings = _config.GetSection("MailSettings");
+        var apiKey = _config["SendGrid__ApiKey"];
+        var client = new SendGridClient(apiKey);
 
-        var mail = new MimeMessage();
-        mail.From.Add(MailboxAddress.Parse(settings["From"]));
-        mail.To.Add(MailboxAddress.Parse(settings["To"]));
-        mail.Subject = $"Yeni İletişim Mesajı — {name}";
+        var from = new EmailAddress("nursevinc90@gmail.com", "nursevinc.com");
+        var to = new EmailAddress("nursevinc90@gmail.com");
+        var subject = $"Yeni İletişim Mesajı — {name}";
+        var html = $"""
+            <h2>Yeni bir mesaj aldın!</h2>
+            <p><strong>Ad:</strong> {name}</p>
+            <p><strong>E-posta:</strong> {email}</p>
+            <p><strong>Mesaj:</strong></p>
+            <p>{message}</p>
+        """;
 
-        mail.Body = new TextPart("html")
-        {
-            Text = $"""
-                <h2>Yeni bir mesaj aldın!</h2>
-                <p><strong>Ad:</strong> {name}</p>
-                <p><strong>E-posta:</strong> {email}</p>
-                <p><strong>Mesaj:</strong></p>
-                <p>{message}</p>
-            """
-        };
-
-        using var smtp = new SmtpClient();
-        smtp.Timeout = 10000;
-        await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-        await smtp.AuthenticateAsync("nursevinc90@gmail.com", "bvngmkowwbogiuln");
-        await smtp.SendAsync(mail);
-        await smtp.DisconnectAsync(true);
+        var msg = MailHelper.CreateSingleEmail(from, to, subject, "", html);
+        await client.SendEmailAsync(msg);
     }
 }
