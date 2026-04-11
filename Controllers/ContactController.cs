@@ -32,7 +32,7 @@ public class ContactController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "Mail gönderilemedi.", error = ex.Message });
+            return StatusCode(500, new { message = "Mail gönderilemedi.", error = ex.Message, stack = ex.StackTrace });
         }
     }
 }
