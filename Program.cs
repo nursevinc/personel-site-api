@@ -30,10 +30,16 @@ if (app.Environment.IsDevelopment())
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseHttpsRedirection();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
-app.UseCors("AllowReact"); 
+
+app.UseHttpsRedirection();
+
+app.UseCors("AllowReact");
+
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
