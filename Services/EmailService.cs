@@ -18,7 +18,7 @@ public class EmailService
 
         var msg = new EmailMessage
         {
-            From = "onboarding@resend.dev",
+            From = "info@nursevinc.com",
             To = { "nursevinc90@gmail.com" },
             Subject = $"Yeni İletişim Mesajı — {name}",
             HtmlBody = $"""
